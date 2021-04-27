@@ -23,6 +23,9 @@ const usersSchema = new mongoose.Schema({
     peers:{
         type:[]
     },
+    posts:{
+        type:[]
+    },
     profileImage: {
         type: String,
         required: false
