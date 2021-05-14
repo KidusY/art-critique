@@ -17,6 +17,7 @@ const db = mongoose.connection
 db.on('error', error => console.log(error))
 db.on('open', () => console.log("Connected to Mongoose"));
 
+
 app.use(cors());
 app.use(express.json());
 
