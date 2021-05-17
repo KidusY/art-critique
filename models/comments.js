@@ -1,32 +1,26 @@
 const mongoose = require('mongoose');
 
 const commentsSchema = new mongoose.Schema({
-    postId: {
+    commentsId: {
         type: String,
     },
-    title: {
-        type: String,
-        required: true
-    },
-    postedBy: {
-        type: String,
-        required: true
-    },
-    imgLink: {
+
+    commentsBy: {
         type: String,
         required: true
     },
     likes: {
         type: []
     },
-    comments: {
-        type: []
+    comment: {
+        type: String,
+        required: true
     },
     datePosted: {
-        type: Date,
+        type: String,
         required: true
     }
 
 })
 
-module.exports = mongoose.model('UsersSchema', commentsSchema)
+module.exports = mongoose.model('commentsSchema', commentsSchema)

@@ -4,7 +4,7 @@ const usersSchema = new mongoose.Schema({
     userId: {
         type: String,
     },
-    name: {
+    displayName: {
         type: String,
         required: true
     },
@@ -29,6 +29,9 @@ const usersSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         required: false
+    },
+    userCreated:{
+        type:String,        
     }
 
 })
