@@ -19,6 +19,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { displayName, email, password } = req.body
+    console.log(displayName);
+
     let user;
     for (const field of ['displayName', 'email', 'password']) {
         if (!req.body[field])
@@ -31,7 +33,7 @@ router.post('/', async (req, res) => {
     try {
         const user = await Users.find({ email: email });
         if (user.length > 0) {
-            res.status(409).json({ errorMessage: "Email already Exists" })
+           return res.status(409).json({ errorMessage: "Email already Exists" })
         }
     }
     catch (err) {
