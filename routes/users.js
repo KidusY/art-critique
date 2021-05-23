@@ -18,16 +18,13 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    const { displayName, email, password } = req.body
-    console.log(displayName);
-
+    const { displayName, email, password } = req.body    
     let user;
     for (const field of ['displayName', 'email', 'password']) {
         if (!req.body[field])
             return res.status(400).json({
                 error: `Missing '${field}' in request body`
             });
-
     }
 
     try {
@@ -37,7 +34,7 @@ router.post('/', async (req, res) => {
         }
     }
     catch (err) {
-        //  res.status(500).json(err);
+        return  res.status(500).json(err);
     }
 
     //creates a user 
@@ -47,6 +44,7 @@ router.post('/', async (req, res) => {
             displayName: displayName,
             email: email,
             password: hashedPassword,
+            profileImage: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
 
         })
 
