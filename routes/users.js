@@ -3,6 +3,7 @@ const router = express.Router();
 const Users = require("../models/users");
 const jwtServices = require('../Services/jwtServices')
 const { v4: uuidv4 } = require('uuid');
+const users = require('../models/users');
 
 router.get('/', async (req, res) => {
 
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    const { displayName, email, password } = req.body    
+    const { displayName, email, password } = req.body
     let user;
     for (const field of ['displayName', 'email', 'password']) {
         if (!req.body[field])
@@ -30,11 +31,11 @@ router.post('/', async (req, res) => {
     try {
         const user = await Users.find({ email: email });
         if (user.length > 0) {
-           return res.status(409).json({ errorMessage: "Email already Exists" })
+            return res.status(409).json({ errorMessage: "Email already Exists" })
         }
     }
     catch (err) {
-        return  res.status(500).json(err);
+        return res.status(500).json(err);
     }
 
     //creates a user 
@@ -58,6 +59,32 @@ router.post('/', async (req, res) => {
 
     })
 
+})
+router.put('/profile/:userId', async (req, res) => {
+    const { displayName, bio, profileImage } = req.body;
+    try {
+        const user = await Users.find({ userId: req.params.userId });
+        if (user.length < 0) {
+            return res.status(409).json({ errorMessage: "User Not Found" })
+        }
+        // create a filter for a movie to update
+        const filter = { userId: req.params.userId };
+        // this option instructs the method to create a document if no documents match the filter
+        const options = { upsert: false };
+        // create a document that sets the plot of the movie
+        const updateDoc = {
+            $set: {
+                displayName, bio, profileImage
+            },
+        };
+        const updatedUser = await users.updateOne(filter, updateDoc, options);
+
+        res.json(updatedUser);
+
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
 })
 
 

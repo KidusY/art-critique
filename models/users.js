@@ -20,6 +20,9 @@ const usersSchema = new mongoose.Schema({
         type: Boolean,
 
     },
+    bio:{
+        type:"string"
+    },
     peers:{
         type:[]
     },

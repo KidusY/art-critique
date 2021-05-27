@@ -27,7 +27,9 @@ router.post('/', async(req,res)=>{
                 sub,
                 peers:users[0].peers,
                 posts:users[0].posts,
-                userId:users[0].userId
+                userId:users[0].userId,
+                profileImage:users[0].profileImage,
+                bio:users[0].bio || ''
 
             })
 
