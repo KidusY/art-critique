@@ -14,10 +14,11 @@ router.get('/', async (req, res) => {
     }
 
 })
-router.get('/:commentsId', async (req, res) => {
+
+router.get('/:postId', async (req, res) => {
 
     try {
-        const comments = await Comments.find({ commentsId:req.params.commentsId});
+        const comments = await Comments.find({ postId:req.params.postId});
         res.json(comments)
     }
     catch (err) {
@@ -29,7 +30,7 @@ router.get('/:commentsId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { commentsBy, comment, postId } = req.body;
-//postId example = b9ed1ae1-2370-4797-add5-4c662b5c6c71
+    //postId example = b9ed1ae1-2370-4797-add5-4c662b5c6c71
 
     for (const field of ['commentsBy', 'comment', 'postId']) {
         if (!req.body[field])
@@ -50,6 +51,7 @@ router.post('/', async (req, res) => {
         
         let Comment = new Comments({
             commentsId: `${uuidv4()}`,
+            postId,
             commentsBy,
             comment,
             datePosted: new Date().toDateString()
