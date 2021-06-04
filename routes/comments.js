@@ -14,6 +14,17 @@ router.get('/', async (req, res) => {
     }
 
 })
+router.get('/:commentsId', async (req, res) => {
+
+    try {
+        const comments = await Comments.find({ commentsId:req.params.commentsId});
+        res.json(comments)
+    }
+    catch (err) {
+        res.status(500).json(err);
+    }
+
+})
 
 
 router.post('/', async (req, res) => {
