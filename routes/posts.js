@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Posts = require("../models/posts");
+const Users = require("../models/users");
 // const { google } = require('googleapis');
 const { v4: uuidv4 } = require('uuid');
 // const multer = require('multer');
@@ -36,6 +37,7 @@ router.get('/', async (req, res) => {
 
     try {
         const posts = await Posts.find({});
+        
 
         res.json(posts)
     }
@@ -50,8 +52,7 @@ router.get('/:userId', async (req, res) => {
 
 
     try {
-        const posts = await Posts.find({ postedBy: userId });
-
+        const posts = await Posts.find({ postedBy: userId });      
         res.json(posts)
     }
     catch (err) {
