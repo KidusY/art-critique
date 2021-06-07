@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/:userId', async (req, res) => {
 
     try {
-        const users = await Users.find({userId:req.params.userId});
+        const users = await Users.find({ userId: req.params.userId });
         res.json(users)
     }
     catch (err) {
@@ -71,6 +71,8 @@ router.post('/', async (req, res) => {
     })
 
 })
+
+//update user info
 router.put('/profile/:userId', async (req, res) => {
     const { displayName, bio, profileImage } = req.body;
     try {
@@ -78,11 +80,11 @@ router.put('/profile/:userId', async (req, res) => {
         if (user.length < 0) {
             return res.status(409).json({ errorMessage: "User Not Found" })
         }
-        // create a filter for a movie to update
+
         const filter = { userId: req.params.userId };
-        // this option instructs the method to create a document if no documents match the filter
+
         const options = { upsert: false };
-        // create a document that sets the plot of the movie
+
         const updateDoc = {
             $set: {
                 displayName, bio, profileImage
@@ -97,6 +99,47 @@ router.put('/profile/:userId', async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+//add a peer 
+router.put('/addpeer/:userId', async (req, res) => {
+    const { peerId } = req.body;
+    try {
+        const user = await Users.find({ userId: req.params.userId });
+        if (user.length < 0) {
+            return res.status(409).json({ errorMessage: "User Not Found" })
+        }
+        
+        let peers = user[0].peers;
+        //checks if the peer is already added
+        let isPeer = peers.includes(peerId);
+        //if added removes the peer from the array
+        if (isPeer) {
+            peers = user[0].peers.filter(peer => peerId !== peer)
+        }
+        //if not added a new a peer 
+        else {
+            peers.push(peerId);
+        }
+        const filter = { userId: req.params.userId };
+
+        const options = { upsert: false };
+
+        const updateDoc = {
+            $set: {
+                peers
+            },
+        };
+        const updatedUser = await users.updateOne(filter, updateDoc, options);
+
+        res.json(updatedUser);
+
+    }
+    catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+
 
 
 module.exports = router
